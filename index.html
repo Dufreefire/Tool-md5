@@ -3,135 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ALEX MD5 ULTRA</title>
+    <title>ALEX MD5 ULTRA - PROTECTED</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono&display=swap');
-        body { background: #01040a; color: #fff; font-family: 'JetBrains Mono', monospace; overflow: hidden; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .glass { background: rgba(13, 17, 23, 0.98); border: 1px solid #22d3ee33; border-radius: 24px; }
-        .tai-neon { color: #00f2ff; text-shadow: 0 0 20px rgba(0, 242, 255, 0.6); }
-        .xiu-neon { color: #ff0055; text-shadow: 0 0 20px rgba(255, 0, 85, 0.6); }
-        input, textarea { background: #000 !important; border: 1px solid #334155 !important; color: #22d3ee !important; }
-        .btn-glow { box-shadow: 0 0 15px rgba(8, 145, 178, 0.4); }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=JetBrains+Mono&display=swap');
+        /* Chống bôi đen toàn trang */
+        * { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        body { background: #01040a; color: #fff; font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(13, 17, 23, 0.98); border: 1px solid #22d3ee22; border-radius: 24px; }
+        .tai { color: #00f2ff; text-shadow: 0 0 15px #00f2ff; }
+        .xiu { color: #ff0055; text-shadow: 0 0 15px #ff0055; }
+        input, textarea { -webkit-user-select: text; user-select: text; } /* Chỉ cho phép nhập liệu */
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-5">
-    <div class="w-full max-w-sm glass p-8 relative">
-        
-        <div id="login-ui" class="space-y-6">
-            <div class="text-center">
-                <h1 class="orbitron text-2xl font-black text-cyan-500 italic">ALEX ULTRA v14.0</h1>
-                <p class="text-[8px] tracking-[0.5em] text-slate-500 mt-2 uppercase">Core logic: Position Weighting</p>
-            </div>
-            <input id="key-input" type="text" placeholder="ACCESS KEY REQUIRED" class="w-full p-4 rounded-xl text-center font-bold orbitron text-xs outline-none focus:border-cyan-400">
-            <button onclick="handleLogin()" class="w-full py-4 rounded-xl bg-cyan-600 font-bold orbitron text-sm btn-glow active:scale-95 transition-all">SYSTEM ACCESS</button>
+<body class="flex items-center justify-center min-h-screen p-4" oncontextmenu="return false;">
+    <div class="w-full max-w-sm glass p-8">
+        <div id="login-ui" class="space-y-4 text-center">
+            <h1 class="orbitron text-2xl text-cyan-500 italic font-black">ALEX ULTRA</h1>
+            <p class="text-[8px] text-slate-500 uppercase tracking-widest">Encrypted Security System</p>
+            <input id="k-i" type="text" placeholder="NHẬP KEY KÍCH HOẠT" class="w-full p-4 bg-black border border-slate-800 rounded-xl text-center text-cyan-400 font-bold outline-none">
+            <button onclick="_0x4f21()" class="w-full py-4 bg-cyan-600 rounded-xl font-bold orbitron">KÍCH HOẠT</button>
         </div>
 
-        <div id="main-ui" class="hidden space-y-6">
-            <div class="flex justify-between items-center text-[10px] orbitron border-b border-cyan-900 pb-3">
-                <span class="text-green-500">● ENGINE ACTIVE</span>
-                <span id="time-display" class="text-slate-500">00:00:00</span>
+        <div id="main-ui" class="hidden space-y-4">
+            <div class="flex justify-between text-[10px] orbitron border-b border-cyan-900 pb-2">
+                <span class="text-cyan-500 font-bold">ALEX v14.0 PRO</span>
+                <span id="clock" class="text-slate-500">00:00:00</span>
             </div>
-
             <div class="relative">
-                <textarea id="md5-input" placeholder="DÁN MÃ MD5 (PHIÊN TÀI XỈU)..." 
-                    class="w-full p-4 h-24 rounded-xl font-mono text-xs outline-none transition-all resize-none uppercase"></textarea>
-                <button onclick="resetApp()" class="absolute -top-2 -right-2 p-2 bg-slate-800 rounded-full border border-slate-600 hover:bg-slate-700">
-                    <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                </button>
+                <textarea id="m-d" placeholder="DÁN MÃ MD5..." class="w-full p-4 h-24 bg-black border border-slate-800 rounded-xl text-xs uppercase focus:border-cyan-500 outline-none"></textarea>
+                <button onclick="_0x1122()" class="absolute top-2 right-2 p-1 bg-slate-800 rounded-md">✕</button>
             </div>
-            
-            <button onclick="analyzeMD5()" id="btn-pre" class="w-full py-5 rounded-xl bg-cyan-600 font-bold orbitron italic tracking-widest text-sm btn-glow">START ANALYSIS</button>
-
-            <div id="res-box" class="hidden space-y-4">
-                <div class="bg-black/60 rounded-3xl p-6 border border-cyan-500/20 text-center">
-                    <p class="text-[9px] orbitron text-slate-500 mb-2">BIT-POSITION RESULT</p>
-                    <h2 id="res-val" class="text-7xl font-black orbitron italic">...</h2>
-                    
-                    <div class="mt-6 flex justify-between px-2">
-                        <div class="text-left">
-                            <p class="text-[7px] text-slate-600 uppercase">Weight ID</p>
-                            <p id="weight-id" class="text-[10px] font-bold text-cyan-400 font-mono">0000</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[7px] text-slate-600 uppercase">Core Logic</p>
-                            <p id="logic-type" class="text-[10px] font-bold text-cyan-400 font-mono">B-W8</p>
-                        </div>
-                    </div>
-                </div>
+            <button onclick="_0x9921()" id="b-n" class="w-full py-5 bg-cyan-600 rounded-xl font-bold orbitron italic">PHÂN TÍCH MD5</button>
+            <div id="res" class="hidden bg-black/50 p-6 rounded-3xl border border-cyan-500/20 text-center">
+                <h2 id="val" class="text-7xl font-black orbitron italic">...</h2>
             </div>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+        const _tg = window.Telegram.WebApp; _tg.expand();
+        
+        // --- CHỐNG COPY & PHÍM TẮT ---
+        document.onkeydown = (e) => {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        };
 
-        // Đồng hồ thời gian thực
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('time-display').innerText = now.toLocaleTimeString();
-        }, 1000);
-
-        function resetApp() {
-            document.getElementById('md5-input').value = "";
-            document.getElementById('res-box').classList.add('hidden');
-            tg.HapticFeedback.impactOccurred('light');
-        }
-
-        async function handleLogin() {
-            const k = document.getElementById('key-input').value.trim();
-            if(!k) return tg.showAlert("Please enter key!");
-            
-            const r = await fetch('/verify-key', {
+        // --- MÃ HÓA LOGIC (MÃ GIẢ) ---
+        async function _0x4f21() {
+            const _k = document.getElementById('k-i').value;
+            const _r = await fetch('/verify-key', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ key: k, deviceId: tg.initDataUnsafe.user?.id || "WEB" })
+                body: JSON.stringify({ key: _k, deviceId: _tg.initDataUnsafe.user?.id || "N/A" })
             });
-            const d = await r.json();
-            if(d.success) {
-                document.getElementById('login-ui').classList.add('hidden');
+            const _d = await _r.json();
+            if(_d.success) {
+                localStorage.setItem('_ak', _k);
+                document.getElementById('login-ui').style.display='none';
                 document.getElementById('main-ui').classList.remove('hidden');
-            } else tg.showAlert(d.msg);
+            } else _tg.showAlert(_d.msg);
         }
 
-        function analyzeMD5() {
-            const raw = document.getElementById('md5-input').value.trim().toLowerCase();
-            if(raw.length < 10) return tg.showAlert("MD5 String too short!");
+        function _0x9921() {
+            const _v = document.getElementById('m-d').value.trim().toLowerCase();
+            if(_v.length < 10) return;
+            const _btn = document.getElementById('b-n');
+            _btn.innerText = "XỬ LÝ DỮ LIỆU..."; _btn.disabled = true;
 
-            const btn = document.getElementById('btn-pre');
-            btn.innerText = "DECRYPTING...";
-            btn.disabled = true;
-
-            // THUẬT TOÁN BYTE-WEIGHTING (CHÍNH XÁC TUYỆT ĐỐI)
-            // Lấy 16 byte từ chuỗi hex 32 ký tự
-            let totalWeight = 0;
-            for (let i = 0; i < raw.length; i += 2) {
-                const byteHex = raw.substr(i, 2);
-                const byteDec = parseInt(byteHex, 16) || 0;
-                // Nhân giá trị byte với vị trí (i) để tạo trọng số cấu trúc
-                totalWeight += (byteDec * (i + 1));
+            // Thuật toán đã được làm rối
+            let _w = 0;
+            for (let i = 0; i < _v.length; i += 2) {
+                _w += (parseInt(_v.substr(i, 2), 16) || 0) * (i + 1);
             }
 
             setTimeout(() => {
-                const isTai = totalWeight % 2 === 0;
-                const resBox = document.getElementById('res-box');
-                const resVal = document.getElementById('res-val');
-                
-                resBox.classList.remove('hidden');
-                resVal.innerText = isTai ? "TÀI" : "XỈU";
-                resVal.className = `text-7xl font-black orbitron italic ${isTai ? 'tai-neon' : 'xiu-neon'}`;
-                
-                document.getElementById('weight-id').innerText = totalWeight.toString(16).toUpperCase();
-                document.getElementById('logic-type').innerText = (totalWeight % 4 === 0) ? "STABLE" : "SHIFT";
-
-                btn.innerText = "START ANALYSIS";
-                btn.disabled = false;
-                tg.HapticFeedback.notificationOccurred('success');
+                const _isT = _w % 2 === 0;
+                const _res = document.getElementById('res'); _res.classList.remove('hidden');
+                const _vL = document.getElementById('val');
+                _vL.innerText = _isT ? "TÀI" : "XỈU";
+                _vL.className = `text-7xl font-black orbitron italic ${_isT ? 'tai' : 'xiu'}`;
+                _btn.innerText = "PHÂN TÍCH MD5"; _btn.disabled = false;
+                _tg.HapticFeedback.notificationOccurred('success');
             }, 800);
         }
+
+        function _0x1122() { document.getElementById('m-d').value = ''; document.getElementById('res').classList.add('hidden'); }
+        window.onload = () => { if(localStorage.getItem('_ak')) { document.getElementById('k-i').value = localStorage.getItem('_ak'); _0x4f21(); } };
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
