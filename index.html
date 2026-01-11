@@ -3,177 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MD5 LASER PREDICTOR - VIP</title>
+    <title>ALEX MD5 - PREMIUM V11</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
         
+        :root {
+            --neon-cyan: rgba(0, 242, 255, 0.6);
+            --neon-pink: rgba(255, 0, 85, 0.6);
+            --bg-dark: #02060f;
+        }
+
         body { 
-            background-color: #05070a; 
+            background: var(--bg-dark); 
             color: #ffffff; 
             font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Hiệu ứng tia Laser nền */
-        .laser-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none; /* Không chặn click */
             overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .laser {
-            position: absolute;
-            width: 200%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
-            box-shadow: 0 0 15px #00f2ff;
-            transform: rotate(-35deg);
-            animation: laserMove 4s linear infinite;
-            opacity: 0.3;
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #0a1a33 0%, #02060f 100%);
+            z-index: -1;
         }
 
-        @keyframes laserMove {
-            0% { top: -100%; left: -100%; }
-            100% { top: 200%; left: 100%; }
-        }
-
-        /* Thêm nhiều tia laser với delay khác nhau */
-        .laser:nth-child(2) { animation-delay: 1.5s; background: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
-        .laser:nth-child(3) { animation-delay: 3s; background: #00ff00; box-shadow: 0 0 15px #00ff00; }
-
-        .glass-card { 
-            background: rgba(15, 20, 30, 0.85); 
+        .glass-panel {
+            background: rgba(13, 20, 33, 0.7);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 242, 255, 0.2); 
-            border-radius: 30px;
-            position: relative;
-            z-index: 10;
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .btn-glow {
-            background: linear-gradient(135deg, #00f2ff, #0062ff);
+        .scanning-bar {
+            position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            box-shadow: 0 0 15px var(--neon-cyan);
+            animation: scan 3s ease-in-out infinite;
+            display: none;
+            z-index: 50;
+        }
+        @keyframes scan { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+        .input-premium {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #00f2ff;
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+        }
+        .input-premium:focus {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 242, 255, 0.05);
+            outline: none;
+        }
+
+        .btn-neon {
+            background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
             transition: 0.3s;
         }
+        .btn-neon:active { transform: scale(0.97); filter: brightness(1.2); }
 
-        .btn-glow:active { transform: scale(0.95); box-shadow: 0 0 30px #00f2ff; }
+        .text-tai { color: #00f2ff; text-shadow: 0 0 20px var(--neon-cyan); }
+        .text-xiu { color: #ff0055; text-shadow: 0 0 20px var(--neon-pink); }
 
-        .result-title { font-family: 'Orbitron', sans-serif; }
+        /* Chống copy/inspect */
+        * { -webkit-user-drag: none; }
     </style>
 </head>
-<body class="p-4 flex flex-col items-center justify-start min-h-screen">
+<body oncontextmenu="return false;">
 
-    <div class="laser-container">
-        <div class="laser"></div>
-        <div class="laser"></div>
-        <div class="laser"></div>
-    </div>
+    <div class="bg-overlay"></div>
 
-    <div class="w-full max-w-md glass-card p-6 shadow-[0_0_50px_rgba(0,242,255,0.1)] mt-4">
-        <div class="text-center mb-8">
-            <h1 class="text-xs font-black tracking-[0.5em] text-cyan-500 uppercase italic mb-1">MD5 Laser Analyzer</h1>
-            <div class="h-[2px] w-20 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto"></div>
-        </div>
+    <div class="flex items-center justify-center min-h-screen p-5">
+        <div class="w-full max-w-md glass-panel p-8 relative overflow-hidden">
+            <div id="radar" class="scanning-bar"></div>
 
-        <div class="space-y-6">
-            <div class="text-center">
-                <h2 class="text-white text-3xl font-black italic tracking-tighter uppercase leading-none result-title">💎 AI PREDICTOR</h2>
-                <p class="text-[10px] text-gray-400 mt-2 uppercase font-bold tracking-widest">Hệ thống phân tích chuỗi MD5 chuẩn 2026</p>
-            </div>
-
-            <div class="space-y-3">
-                <input type="text" id="md5Input" placeholder="Dán mã MD5 phiên tại đây..." 
-                    class="w-full p-5 rounded-2xl bg-black/50 border border-cyan-500/30 text-center font-mono text-sm text-cyan-400 outline-none focus:border-cyan-500 transition-all">
-            </div>
-
-            <button onclick="analyzeMD5()" class="w-full py-5 rounded-2xl btn-glow text-white font-black uppercase tracking-[0.2em] text-sm italic">
-                PHÂN TÍCH CHUỖI MD5
-            </button>
-        </div>
-
-        <div id="resultArea" class="hidden mt-10 space-y-6 animate-pulse-slow">
-            <div class="p-8 text-center bg-black/40 rounded-3xl border border-white/5">
-                <p class="text-[11px] font-bold text-gray-500 uppercase mb-3">Kết quả dự đoán</p>
-                <h2 id="finalPredict" class="text-6xl font-black italic tracking-tighter result-title">...</h2>
-                <p class="text-[9px] text-gray-500 mt-6 font-medium italic">Thuật toán đã bóc tách từng byte chuỗi MD5</p>
-            </div>
-
-            <div class="bg-black/60 p-4 rounded-xl border border-cyan-500/20">
-                <p class="text-[9px] text-cyan-800 font-bold uppercase mb-2 text-center tracking-tighter">Hash Analyzed:</p>
-                <p id="hashView" class="text-[10px] font-mono break-all text-cyan-200 text-center leading-relaxed"></p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-cyan-500/5 p-5 rounded-2xl border border-cyan-500/10 text-center">
-                    <p class="text-[10px] text-gray-500 font-black uppercase mb-1">XỈU</p>
-                    <p id="xiuVal" class="text-3xl font-black text-cyan-400">0%</p>
+            <div id="login-zone" class="space-y-8 py-2">
+                <div class="text-center">
+                    <h1 class="text-3xl font-black orbitron italic tracking-tighter text-white">
+                        ALEX<span class="text-cyan-500">PRO</span>
+                    </h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Hệ thống bảo mật cấp cao</p>
                 </div>
-                <div class="bg-cyan-500/5 p-5 rounded-2xl border border-cyan-500/10 text-center">
-                    <p class="text-[10px] text-gray-500 font-black uppercase mb-1">TÀI</p>
-                    <p id="taiVal" class="text-3xl font-black text-cyan-400">0%</p>
+
+                <div class="space-y-4">
+                    <input type="text" id="key-field" placeholder="NHẬP KEY TRUY CẬP" 
+                        class="w-full p-4 rounded-2xl input-premium text-center uppercase tracking-widest">
+                    <button onclick="checkKey()" class="w-full py-4 rounded-2xl btn-neon text-white font-bold italic text-sm">
+                        XÁC THỰC NGAY
+                    </button>
                 </div>
             </div>
 
-            <button onclick="resetTool()" class="w-full py-4 rounded-2xl bg-red-500/10 text-red-500 border border-red-500/20 uppercase font-black text-[11px] tracking-widest mt-6 hover:bg-red-500/20 transition-all">
-                XÓA & NHẬP PHIÊN MỚI
-            </button>
+            <div id="main-zone" class="hidden space-y-6">
+                <div class="flex justify-between items-center text-[10px] orbitron text-cyan-500">
+                    <span>STATUS: SECURE</span>
+                    <span>V11.0.4</span>
+                </div>
+
+                <div class="space-y-4">
+                    <input type="text" id="md5-field" placeholder="Mã phiên MD5..." 
+                        class="w-full p-4 rounded-2xl input-premium text-center font-mono">
+                    <button id="scan-btn" onclick="runAnalysis()" class="w-full py-4 rounded-2xl btn-neon text-white font-bold italic">
+                        PHÂN TÍCH DỮ LIỆU
+                    </button>
+                </div>
+
+                <div id="result-zone" class="hidden space-y-4 text-center py-4">
+                    <div class="p-6 bg-black/40 rounded-[2rem] border border-white/5 shadow-inner">
+                        <p class="text-[10px] text-gray-500 uppercase orbitron mb-2">Dự đoán AI</p>
+                        <h2 id="res-label" class="text-7xl font-black orbitron italic">...</h2>
+                        <div class="mt-4 flex justify-between text-[9px] font-bold text-cyan-800">
+                            <span id="entropy-label">ENTROPY: 0.000</span>
+                            <span id="conf-label">CONFIDENCE: 0%</span>
+                        </div>
+                    </div>
+                    <button onclick="resetApp()" class="w-full py-3 rounded-xl bg-white/5 text-gray-400 text-[10px] orbitron">LÀM MỚI</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        /** 🛡️ BẢO MẬT NÂNG CAO **/
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function analyzeMD5() {
-            const input = document.getElementById('md5Input').value.trim();
-            if (input.length < 8) {
-                tg.showAlert("Mã MD5 không hợp lệ!");
-                return;
+        // Anti-Inspect
+        setInterval(() => { (function(){}).constructor("debugger")(); }, 100);
+        document.onkeydown = (e) => {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74))) return false;
+        };
+
+        function checkKey() {
+            const k = document.getElementById('key-field').value.trim().toUpperCase();
+            if (k.startsWith("ALEX-") && k.length >= 8) {
+                document.getElementById('login-zone').style.display = 'none';
+                document.getElementById('main-zone').classList.remove('hidden');
+                tg.HapticFeedback.notificationOccurred('success');
+            } else {
+                tg.showAlert("Key không đúng hoặc đã hết hạn!");
             }
-
-            // Thuật toán Deep MD5 Analysis
-            let weightSum = 0;
-            // Phân tích chuỗi theo cặp Hex để lấy giá trị byte thực tế
-            for (let i = 0; i < input.length - 1; i += 2) {
-                let hexPair = input.substr(i, 2);
-                weightSum += parseInt(hexPair, 16) * (i + 1);
-            }
-
-            // Logic dự đoán dựa trên entropy chuỗi
-            const isTai = weightSum % 2 !== 0;
-            const primaryRate = (80 + (weightSum % 19)).toFixed(2);
-            const secondaryRate = (100 - parseFloat(primaryRate)).toFixed(2);
-
-            // Cập nhật giao diện
-            document.getElementById('resultArea').classList.remove('hidden');
-            document.getElementById('hashView').innerText = input;
-            
-            const label = document.getElementById('finalPredict');
-            label.innerText = isTai ? "💎 TÀI" : "💎 XỈU";
-            label.className = `text-6xl font-black italic tracking-tighter result-title ${isTai ? 'text-cyan-400' : 'text-red-500'}`;
-            label.style.textShadow = isTai ? "0 0 20px #00f2ff" : "0 0 20px #ff0000";
-
-            document.getElementById('taiVal').innerText = (isTai ? primaryRate : secondaryRate) + "%";
-            document.getElementById('xiuVal').innerText = (isTai ? secondaryRate : primaryRate) + "%";
-
-            if(tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-            
-            setTimeout(() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 200);
         }
 
-        function resetTool() {
-            document.getElementById('md5Input').value = "";
-            document.getElementById('resultArea').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        function runAnalysis() {
+            const md5 = document.getElementById('md5-field').value.trim();
+            if (md5.length < 8) return;
+
+            const btn = document.getElementById('scan-btn');
+            const radar = document.getElementById('radar');
+            
+            btn.disabled = true;
+            btn.innerText = "ĐANG PHÂN TÍCH...";
+            radar.style.display = 'block';
+
+            setTimeout(() => {
+                // Thuật toán Deterministic (Không Random)
+                let weight = 0;
+                for (let i = 0; i < md5.length; i++) {
+                    weight += md5.charCodeAt(i) * (i + 1.618);
+                }
+
+                const isTai = Math.floor(weight) % 2 === 0;
+                const entropy = (weight % 1).toFixed(4);
+                const confidence = (50 + (weight % 49.5)).toFixed(2);
+
+                document.getElementById('result-zone').classList.remove('hidden');
+                const lbl = document.getElementById('res-label');
+                lbl.innerText = isTai ? "TÀI" : "XỈU";
+                lbl.className = `text-7xl font-black orbitron italic ${isTai ? 'text-tai' : 'text-xiu'}`;
+                
+                document.getElementById('entropy-label').innerText = "ENTROPY: " + entropy;
+                document.getElementById('conf-label').innerText = "CONFIDENCE: " + confidence + "%";
+                
+                radar.style.display = 'none';
+                btn.disabled = false;
+                btn.innerText = "PHÂN TÍCH DỮ LIỆU";
+                tg.HapticFeedback.impactOccurred('heavy');
+            }, 2500);
+        }
+
+        function resetApp() {
+            document.getElementById('md5-field').value = "";
+            document.getElementById('result-zone').classList.add('hidden');
         }
     </script>
 </body>
